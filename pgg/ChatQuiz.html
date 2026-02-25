@@ -1,0 +1,14 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+<h3>Comprehension Questions</h3>
+
+<p>Is communication binding?</p>
+{{ form.chat_q1 }}
+
+<p>Does the chat last 120 seconds?</p>
+{{ form.chat_q2 }}
+
+{{ next_button }}
+
+{% endblock %}

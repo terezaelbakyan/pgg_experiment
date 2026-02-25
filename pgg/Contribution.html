@@ -1,0 +1,41 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+<h3>Contribution Decision</h3>
+
+<p>
+You receive <strong>10 coins</strong> this round.
+</p>
+
+<p>
+Please choose how many coins (0–10) you would like to contribute 
+to the public project.
+</p>
+
+<p>Remember:</p>
+
+<ul>
+<li>The project is provided only if total contributions are at least <strong>15 coins</strong>.</li>
+<li>If provided, total contributions are doubled and shared equally.</li>
+<li>If not provided, contributions are lost.</li>
+</ul>
+
+{% if treatment == 'Binary' and intentions %}
+
+<h4>Intended Contributions of Group Members</h4>
+
+<ul>
+{% for item in intentions %}
+    <li>
+        Participant {{ item.id }} intended to contribute {{ item.intention }}
+    </li>
+{% endfor %}
+</ul>
+
+{% endif %}
+
+{{ formfields }}
+
+{{ next_button }}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+<h3>Round Results</h3>
+
+<p>Total contribution: {{ total_contribution }}</p>
+
+{% if threshold_met %}
+<p>The threshold was reached.</p>
+{% else %}
+<p>The threshold was NOT reached.</p>
+{% endif %}
+
+<h4>Individual Contributions</h4>
+
+<ul>
+{% if group_players %}
+    {% for p in group_players %}
+        <li>Participant {{ forloop.counter }} contributed {{ p.contribution }}</li>
+    {% endfor %}
+{% endif %}
+</ul>
+
+<p>Your payoff this round: {{ payoff }}</p>
+
+{{ next_button }}
+
+{% endblock %}

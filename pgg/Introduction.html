@@ -1,0 +1,75 @@
+{{ block title }}Instructions{{ endblock }}
+
+{{ block content }}
+
+<h3>Welcome to the Experiment</h3>
+
+<p>
+In this experiment, you will repeatedly make decisions involving a public project.
+</p>
+
+<h4>Your Endowment</h4>
+<p>
+At the beginning of each round, you will receive <strong>10 coins</strong>.
+These coins do not carry over between rounds.
+Each round starts with a new endowment of 10 coins.
+</p>
+
+<h4>Your Decision</h4>
+<p>
+In every round, you must decide how many of your 10 coins 
+(between 0 and 10) you would like to contribute to a public project.
+</p>
+
+<h4>How the Public Project Works</h4>
+
+<p>
+The public project will be provided only if the total contribution of the three participants in your interaction is at least <strong>15 coins</strong>.
+</p>
+
+<ul>
+<li>
+If total contributions are <strong>15 coins or more</strong>:
+<ul>
+<li>The total contribution will be <strong>doubled</strong>.</li>
+<li>The doubled amount will be divided equally among the three participants.</li>
+</ul>
+</li>
+
+<li>
+If total contributions are <strong>less than 15 coins</strong>:
+<ul>
+<li>The public project will not be provided.</li>
+<li>All contributed coins are lost.</li>
+</ul>
+</li>
+</ul>
+
+<h4>Your Payoff in a Round</h4>
+
+<p><strong>If the threshold is reached:</strong></p>
+<p>
+Your payoff = 10 − Your Contribution + (2 × Total Contribution ÷ 3)
+</p>
+
+<p><strong>If the threshold is NOT reached:</strong></p>
+<p>
+Your payoff = 10 − Your Contribution
+</p>
+
+<h4>Important</h4>
+
+<ul>
+<li>All decisions are anonymous.</li>
+<li>Your payoff depends on your decision and the decisions of the other participants.</li>
+<li>Communication rules (if any) will be explained before each decision.</li>
+</ul>
+
+<p>
+On the next page, you will answer a short quiz to ensure you understand the rules.
+You must answer all questions correctly before proceeding.
+</p>
+
+{{ next_button }}
+
+{{ endblock }}

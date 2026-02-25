@@ -1,0 +1,47 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+{% if treatment and treatment == 'Binary' %}
+
+<h4>Message to Your group members</h4>
+<p>
+You receive 10 coins.
+The public project is provided if total contributions reach 15 coins.
+If provided, contributions are doubled and shared equally.
+If not, contributions are lost.
+</p>
+<p>
+Before making your decision, you may indicate how many coins you intend to contribute.
+This message is non-binding. 
+You group members are able to see the number of coins you intend to contribute. 
+You will be able to see the number of coins your group members do intend to contribute.
+</p>
+
+{{ formfields }}
+
+<div style="margin-top: 25px;">
+    {{ next_button }}
+</div>
+
+{% endif %}
+
+{% if treatment and treatment == 'Chat' %}
+
+<h4>Free Communication</h4>
+
+<p>
+You have 120 seconds to communicate with the other members of your group.
+Communication is non-binding. 
+</p>
+
+<div style="margin-bottom: 20px;">
+    {{ chat }}
+</div>
+
+<div style="margin-top: 30px; text-align: center;">
+    {{ next_button }}
+</div>
+
+{% endif %}
+
+{% endblock %}
