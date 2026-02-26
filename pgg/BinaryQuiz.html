@@ -1,0 +1,34 @@
+{% extends "global/Page.html" %}
+{% block content %}
+
+<h3>Comprehension Questions</h3>
+
+<p>Can the other members of your group see your intended contribution?</p>
+<div>
+    <label><input type="radio" name="binary_q1" value="Yes" required> Yes</label>
+    &nbsp;&nbsp;
+    <label><input type="radio" name="binary_q1" value="No"> No</label>
+</div>
+
+<br>
+
+<p>Does your indicated intention count as your final contribution decision?</p>
+<div>
+    <label><input type="radio" name="binary_q2" value="Yes"> Yes</label>
+    &nbsp;&nbsp;
+    <label><input type="radio" name="binary_q2" value="No" required> No</label>
+</div>
+
+<br>
+
+<p>Is any amount of coins (0–10) possible to contribute after indicating your intention?</p>
+<div>
+    <label><input type="radio" name="binary_q3" value="Yes" required> Yes</label>
+    &nbsp;&nbsp;
+    <label><input type="radio" name="binary_q3" value="No"> No</label>
+</div>
+
+<br>
+{{ next_button }}
+
+{% endblock %}

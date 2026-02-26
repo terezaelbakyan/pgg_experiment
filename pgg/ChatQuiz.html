@@ -3,12 +3,32 @@
 
 <h3>Comprehension Questions</h3>
 
-<p>Is communication binding?</p>
-{{ form.chat_q1 }}
+<p>Does the communication phase last 120 seconds?</p>
+<div>
+    <label><input type="radio" name="chat_q1" value="Yes" required> Yes</label>
+    &nbsp;&nbsp;
+    <label><input type="radio" name="chat_q1" value="No"> No</label>
+</div>
 
-<p>Does the chat last 120 seconds?</p>
-{{ form.chat_q2 }}
+<br>
 
+<p>Can the other members of your group read your messages?</p>
+<div>
+    <label><input type="radio" name="chat_q2" value="Yes" required> Yes</label>
+    &nbsp;&nbsp;
+    <label><input type="radio" name="chat_q2" value="No"> No</label>
+</div>
+
+<br>
+
+<p>Is any amount of coins (0–10) possible to contribute after the communication phase?</p>
+<div>
+    <label><input type="radio" name="chat_q3" value="Yes" required> Yes</label>
+    &nbsp;&nbsp;
+    <label><input type="radio" name="chat_q3" value="No"> No</label>
+</div>
+
+<br>
 {{ next_button }}
 
 {% endblock %}

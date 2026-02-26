@@ -1,5 +1,6 @@
 from otree.api import *
 import random
+from datetime import datetime
 
 
 class C(BaseConstants):
@@ -42,6 +43,8 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
 
+    treatment = models.StringField(blank=True)
+
     contribution = models.IntegerField(
         min=0,
         max=C.ENDOWMENT
@@ -64,28 +67,53 @@ class Player(BasePlayer):
         blank=True
     )
 
+    chat_q3 = models.StringField(
+        choices=['Yes', 'No'],
+        blank=True
+    )
+
+    binary_q1 = models.StringField(
+        choices=['Yes', 'No'],
+        blank=True
+    )
+
+    binary_q2 = models.StringField(
+        choices=['Yes', 'No'],
+        blank=True
+    )
+
+    binary_q3 = models.StringField(
+        choices=['Yes', 'No'],
+        blank=True
+    )
+
 
 # Stores one row per chat message — avoids race conditions and captures full history
 class ChatMessage(ExtraModel):
     group = models.Link(Group)
     round_number = models.IntegerField()
+    participant_code = models.StringField()
     sender_id = models.IntegerField()
     message = models.StringField()
+    timestamp = models.StringField()
 
 
 def custom_export(_players):
     # Available in Admin → Data → "pgg (custom export)"
-    yield ['sep=,']  # tells Excel to use comma as delimiter when opening directly
-    yield ['session_code', 'group_id', 'treatment', 'round_number', 'sender_id', 'message']
+    yield ['sep=,']
+    yield ['session.code', 'round_number', 'group.id_in_subsession', 'participant.code', 'id_in_group', 'body', 'timestamp']
     for msg in ChatMessage.filter():
         group = msg.group
+        if group.field_maybe_none('treatment') != 'Chat':
+            continue
         yield [
             group.session.code,
-            group.id,
-            group.field_maybe_none('treatment') or '',
             msg.round_number,
+            group.id_in_subsession,
+            msg.participant_code,
             msg.sender_id,
             msg.message,
+            msg.timestamp,
         ]
 
 
@@ -94,21 +122,42 @@ def creating_session(subsession: Subsession):
     if subsession.round_number == 1:
 
         subsession.group_randomly()
-
         groups = subsession.get_groups()
 
-        # Build a shuffled treatment list so assignment is random each session
+        # Randomly assign one treatment per group (balanced across treatments)
         treatments = (['Control', 'Binary', 'Chat'] * len(groups))[:len(groups)]
         random.shuffle(treatments)
 
         for g, treatment in zip(groups, treatments):
             g.treatment = treatment
+            # Also store treatment on each player for cross-round access
+            for p in g.get_players():
+                p.treatment = treatment
 
     else:
-        # Keep the same groups and treatments as round 1
-        subsession.group_like_round(1)
+        # Reshuffle players within their treatment — players never cross treatment boundaries
+        players = subsession.get_players()
+
+        buckets = {'Control': [], 'Binary': [], 'Chat': []}
+        for p in players:
+            t = p.in_round(1).treatment   # read treatment assigned in round 1
+            p.treatment = t               # propagate to current round
+            buckets[t].append(p)
+
+        # Shuffle within each treatment bucket and build new group matrix
+        new_matrix = []
+        for t_players in buckets.values():
+            random.shuffle(t_players)
+            for i in range(0, len(t_players), C.PLAYERS_PER_GROUP):
+                chunk = t_players[i:i + C.PLAYERS_PER_GROUP]
+                if len(chunk) == C.PLAYERS_PER_GROUP:
+                    new_matrix.append(chunk)
+
+        subsession.set_group_matrix(new_matrix)
+
+        # Set treatment on each new group
         for g in subsession.get_groups():
-            g.treatment = g.in_round(1).treatment
+            g.treatment = g.get_players()[0].treatment
 
 # PAGES
 
@@ -139,7 +188,7 @@ class ChatInfo(Page):
 class ChatQuiz(Page):
 
     form_model = 'player'
-    form_fields = ['chat_q1', 'chat_q2']
+    form_fields = ['chat_q1', 'chat_q2', 'chat_q3']
 
     @staticmethod
     def is_displayed(player):
@@ -149,11 +198,45 @@ class ChatQuiz(Page):
     @staticmethod
     def error_message(player, values):
 
-        if values['chat_q1'] != 'No':
-            return "Communication is binding."
+        if values['chat_q1'] != 'Yes':
+            return "The communication phase lasts 120 seconds."
 
         if values['chat_q2'] != 'Yes':
-            return "The chat duration is 120 seconds."
+            return "All members of your group can read your messages."
+
+        if values['chat_q3'] != 'Yes':
+            return "You can contribute any amount between 0 and 10 coins after the communication phase."
+
+class BinaryInfo(Page):
+
+    @staticmethod
+    def is_displayed(player):
+        return (player.round_number == 1 and
+                player.group.field_maybe_none('treatment') == 'Binary')
+
+
+class BinaryQuiz(Page):
+
+    form_model = 'player'
+    form_fields = ['binary_q1', 'binary_q2', 'binary_q3']
+
+    @staticmethod
+    def is_displayed(player):
+        return (player.round_number == 1 and
+                player.group.field_maybe_none('treatment') == 'Binary')
+
+    @staticmethod
+    def error_message(player, values):
+
+        if values['binary_q1'] != 'Yes':
+            return "All members of your group can see your intended contribution."
+
+        if values['binary_q2'] != 'No':
+            return "Your indicated intention is not your final contribution decision."
+
+        if values['binary_q3'] != 'Yes':
+            return "You can contribute any amount between 0 and 10 coins after indicating your intention."
+
 
 class WaitBeforeChat(WaitPage):
 
@@ -186,8 +269,10 @@ class Communication(Page):
         ChatMessage.create(
             group=player.group,
             round_number=player.round_number,
+            participant_code=player.participant.code,
             sender_id=player.id_in_group,
             message=message,
+            timestamp=datetime.now().strftime('%H:%M:%S'),
         )
         # Broadcast to all group members
         return {
@@ -285,8 +370,10 @@ class FinalResults(Page):
 page_sequence = [
     Introduction,
     Quiz,
-    ChatInfo,        
-    ChatQuiz,        
+    ChatInfo,
+    ChatQuiz,
+    BinaryInfo,
+    BinaryQuiz,
     WaitBeforeChat,
     Communication,
     WaitAfterBinary,

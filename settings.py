@@ -6,7 +6,7 @@ SESSION_CONFIGS = [
     dict(
         name='pgg_multi_treatment',
         display_name="Public Goods Game (All Treatments in One Session)",
-        num_demo_participants=9,  # min 9, multiples of 9
+        num_demo_participants=9,  # must be a multiple of 9 (3 treatments × 3 players per group). Min = 9.
         app_sequence=['pgg'],
         num_rounds=4,  # <-- change this to set the number of rounds per session
     ),
