@@ -87,6 +87,13 @@ class Player(BasePlayer):
         blank=True
     )
 
+    quiz_q1 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
+    quiz_q4 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
+    quiz_q5 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
+    quiz_q6 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
+    quiz_q7 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
+    quiz_q8 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
+
 
 # Stores one row per chat message — avoids race conditions and captures full history
 class ChatMessage(ExtraModel):
@@ -170,11 +177,26 @@ class Introduction(Page):
 
 class Quiz(Page):
     form_model = 'player'
-    form_fields = []
+    form_fields = ['quiz_q1', 'quiz_q4', 'quiz_q5', 'quiz_q6', 'quiz_q7', 'quiz_q8']
 
     @staticmethod
     def is_displayed(player):
         return player.round_number == 1
+
+    @staticmethod
+    def error_message(_player, values):
+        if values['quiz_q1'] != 'B':
+            return "Q1: You receive 10 coins each round."
+        if values['quiz_q4'] != 'C':
+            return "Q4: If total contributions are less than 15, contributions are lost."
+        if values['quiz_q5'] != 'A':
+            return "Q5: If total contributions reach 15, they are doubled and equally divided."
+        if values['quiz_q6'] != 'C':
+            return "Q6: Payoff = 10 − 4 + (18 × 2 / 3) = 18."
+        if values['quiz_q7'] != 'A':
+            return "Q7: Payoff = 10 − 6 = 4 (threshold not reached)."
+        if values['quiz_q8'] != 'C':
+            return "Q8: Payoff = 10 − 0 + (18 × 2 / 3) = 22."
 
 
 class ChatInfo(Page):
