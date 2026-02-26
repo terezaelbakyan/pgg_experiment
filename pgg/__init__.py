@@ -19,6 +19,7 @@ class Group(BaseGroup):
     treatment = models.StringField()
     total_contribution = models.IntegerField()
     threshold_met = models.BooleanField()
+    chat_transcript = models.LongStringField(blank=True)
 
     def set_payoffs(self):
 
@@ -62,6 +63,31 @@ class Player(BasePlayer):
         choices=['Yes', 'No'],
         blank=True
     )
+
+
+# Stores one row per chat message — avoids race conditions and captures full history
+class ChatMessage(ExtraModel):
+    group = models.Link(Group)
+    round_number = models.IntegerField()
+    sender_id = models.IntegerField()
+    message = models.StringField()
+
+
+def custom_export(_players):
+    # Available in Admin → Data → "pgg (custom export)"
+    yield ['sep=,']  # tells Excel to use comma as delimiter when opening directly
+    yield ['session_code', 'group_id', 'treatment', 'round_number', 'sender_id', 'message']
+    for msg in ChatMessage.filter():
+        group = msg.group
+        yield [
+            group.session.code,
+            group.id,
+            group.field_maybe_none('treatment') or '',
+            msg.round_number,
+            msg.sender_id,
+            msg.message,
+        ]
+
 
 def creating_session(subsession: Subsession):
 
@@ -139,7 +165,6 @@ class Communication(Page):
 
     form_model = 'player'
     form_fields = ['intention']
-    chat_model = 'group'
 
     @staticmethod
     def is_displayed(player):
@@ -151,6 +176,28 @@ class Communication(Page):
         if player.group.field_maybe_none('treatment') == 'Chat':
             return 120
         return None
+
+    @staticmethod
+    def live_method(player, data):
+        message = data.get('message', '').strip()
+        if not message:
+            return {}
+        # Store as an individual record — no race conditions, full history preserved
+        ChatMessage.create(
+            group=player.group,
+            round_number=player.round_number,
+            sender_id=player.id_in_group,
+            message=message,
+        )
+        # Broadcast to all group members
+        return {
+            p.id_in_group: {'message': message, 'sender': player.id_in_group}
+            for p in player.group.get_players()
+        }
+
+    @staticmethod
+    def js_vars(player):
+        return dict(id_in_group=player.id_in_group)
 
     @staticmethod
     def vars_for_template(player):
@@ -202,6 +249,12 @@ class WaitForOthers(WaitPage):
     @staticmethod
     def after_all_players_arrive(group: Group):
         group.set_payoffs()
+        # Rebuild chat transcript from all stored messages for this group/round
+        messages = ChatMessage.filter(group=group)
+        if messages:
+            group.chat_transcript = '\n'.join(
+                f"P{m.sender_id}: {m.message}" for m in messages
+            )
 
 
 class Results(Page):

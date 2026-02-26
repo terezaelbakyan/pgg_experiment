@@ -31,16 +31,44 @@ You will be able to see the number of coins your group members do intend to cont
 
 <p>
 You have 120 seconds to communicate with the other members of your group.
-Communication is non-binding. 
+Communication is non-binding.
 </p>
 
-<div style="margin-bottom: 20px;">
-    {{ chat }}
+<div id="chat-box" style="border: 1px solid #ccc; height: 220px; overflow-y: auto; padding: 10px; margin-bottom: 10px; background: #f9f9f9; border-radius: 4px;"></div>
+
+<div style="display: flex; gap: 8px; margin-bottom: 20px;">
+    <input type="text" id="chat-input" class="form-control" placeholder="Type a message and press Enter or Send...">
+    <button type="button" class="btn btn-secondary" onclick="sendMessage()">Send</button>
 </div>
 
 <div style="margin-top: 30px; text-align: center;">
     {{ next_button }}
 </div>
+
+<script>
+    function sendMessage() {
+        var input = document.getElementById('chat-input');
+        var msg = input.value.trim();
+        if (msg) {
+            liveSend({'message': msg});
+            input.value = '';
+        }
+    }
+
+    document.getElementById('chat-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    function liveRecv(data) {
+        var box = document.getElementById('chat-box');
+        var div = document.createElement('div');
+        div.style.marginBottom = '4px';
+        var label = data.sender == js_vars.id_in_group ? '<strong>You</strong>' : '<strong>Participant ' + data.sender + '</strong>';
+        div.innerHTML = label + ': ' + data.message;
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+    }
+</script>
 
 {% endif %}
 
