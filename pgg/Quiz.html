@@ -4,65 +4,116 @@
 <h3>Comprehension Questions</h3>
 <p>Please answer all questions correctly to continue.</p>
 
+<div id="quiz-error" style="color: red; margin-bottom: 10px; display: none;"></div>
+
 <p><strong>1. How many coins do you receive at the beginning of each round?</strong></p>
 <div>
-    <label><input type="radio" name="quiz_q1" value="A" required> A) 5 coins</label><br>
-    <label><input type="radio" name="quiz_q1" value="B"> B) 10 coins</label><br>
-    <label><input type="radio" name="quiz_q1" value="C"> C) 15 coins</label><br>
-    <label><input type="radio" name="quiz_q1" value="D"> D) It depends on the previous round</label>
+    <label><input type="radio" name="q1" value="A"> A) 5 coins</label><br>
+    <label><input type="radio" name="q1" value="B"> B) 10 coins</label><br>
+    <label><input type="radio" name="q1" value="C"> C) 15 coins</label><br>
+    <label><input type="radio" name="q1" value="D"> D) It depends on the previous round</label>
 </div>
 
 <br>
 
 <p><strong>2. What happens if total group contributions are LESS than 15 coins?</strong></p>
 <div>
-    <label><input type="radio" name="quiz_q4" value="A" required> A) Contributions are doubled and shared</label><br>
-    <label><input type="radio" name="quiz_q4" value="B"> B) Contributions are returned</label><br>
-    <label><input type="radio" name="quiz_q4" value="C"> C) Contributions are lost and not multiplied</label><br>
-    <label><input type="radio" name="quiz_q4" value="D"> D) Nothing happens</label>
+    <label><input type="radio" name="q4" value="A"> A) Contributions are doubled and shared</label><br>
+    <label><input type="radio" name="q4" value="B"> B) Contributions are returned</label><br>
+    <label><input type="radio" name="q4" value="C"> C) Contributions are lost and not multiplied</label><br>
+    <label><input type="radio" name="q4" value="D"> D) Nothing happens</label>
 </div>
 
 <br>
 
 <p><strong>3. What happens if total group contributions are AT LEAST 15 coins?</strong></p>
 <div>
-    <label><input type="radio" name="quiz_q5" value="A" required> A) Contributions are doubled and equally divided</label><br>
-    <label><input type="radio" name="quiz_q5" value="B"> B) Contributions are tripled</label><br>
-    <label><input type="radio" name="quiz_q5" value="C"> C) Only contributors receive money</label><br>
-    <label><input type="radio" name="quiz_q5" value="D"> D) Nothing happens</label>
+    <label><input type="radio" name="q5" value="A"> A) Contributions are doubled and equally divided</label><br>
+    <label><input type="radio" name="q5" value="B"> B) Contributions are tripled</label><br>
+    <label><input type="radio" name="q5" value="C"> C) Only contributors receive money</label><br>
+    <label><input type="radio" name="q5" value="D"> D) Nothing happens</label>
 </div>
 
 <br>
 
 <p><strong>4. You contribute 4 coins and total group contributions are 18 coins. What is your payoff?</strong></p>
 <div>
-    <label><input type="radio" name="quiz_q6" value="A" required> A) 12</label><br>
-    <label><input type="radio" name="quiz_q6" value="B"> B) 14</label><br>
-    <label><input type="radio" name="quiz_q6" value="C"> C) 18</label><br>
-    <label><input type="radio" name="quiz_q6" value="D"> D) 20</label>
+    <label><input type="radio" name="q6" value="A"> A) 12</label><br>
+    <label><input type="radio" name="q6" value="B"> B) 14</label><br>
+    <label><input type="radio" name="q6" value="C"> C) 18</label><br>
+    <label><input type="radio" name="q6" value="D"> D) 20</label>
 </div>
 
 <br>
 
 <p><strong>5. You contribute 6 coins and total group contributions are 12 coins. What is your payoff?</strong></p>
 <div>
-    <label><input type="radio" name="quiz_q7" value="A" required> A) 4</label><br>
-    <label><input type="radio" name="quiz_q7" value="B"> B) 6</label><br>
-    <label><input type="radio" name="quiz_q7" value="C"> C) 10</label><br>
-    <label><input type="radio" name="quiz_q7" value="D"> D) 12</label>
+    <label><input type="radio" name="q7" value="A"> A) 4</label><br>
+    <label><input type="radio" name="q7" value="B"> B) 6</label><br>
+    <label><input type="radio" name="q7" value="C"> C) 10</label><br>
+    <label><input type="radio" name="q7" value="D"> D) 12</label>
 </div>
 
 <br>
 
 <p><strong>6. You contribute 0 coins and total group contributions are 18 coins. What is your payoff?</strong></p>
 <div>
-    <label><input type="radio" name="quiz_q8" value="A" required> A) 0</label><br>
-    <label><input type="radio" name="quiz_q8" value="B"> B) 18</label><br>
-    <label><input type="radio" name="quiz_q8" value="C"> C) 22</label><br>
-    <label><input type="radio" name="quiz_q8" value="D"> D) 10</label>
+    <label><input type="radio" name="q8" value="A"> A) 0</label><br>
+    <label><input type="radio" name="q8" value="B"> B) 18</label><br>
+    <label><input type="radio" name="q8" value="C"> C) 22</label><br>
+    <label><input type="radio" name="q8" value="D"> D) 10</label>
 </div>
 
 <br>
+
+<p><strong>7. How many participants are in your group each round?</strong></p>
+<div>
+    <label><input type="radio" name="q9" value="A"> A) 2</label><br>
+    <label><input type="radio" name="q9" value="B"> B) 3</label><br>
+    <label><input type="radio" name="q9" value="C"> C) 4</label><br>
+    <label><input type="radio" name="q9" value="D"> D) It changes every round</label>
+</div>
+
+<br>
+
+<p><strong>8. Will you play with the same group members in every round?</strong></p>
+<div>
+    <label><input type="radio" name="q10" value="Yes"> Yes</label>
+    &nbsp;&nbsp;
+    <label><input type="radio" name="q10" value="No"> No</label>
+</div>
+
+<input type="hidden" name="quiz_passed" id="quiz_passed" value="">
+
+<br>
 {{ next_button }}
+
+<script>
+var correct = {q1:'B', q4:'C', q5:'A', q6:'C', q7:'A', q8:'C', q9:'B', q10:'No'};
+var messages = {
+    q1: 'Q1: You receive 10 coins each round.',
+    q4: 'Q2: If total contributions are less than 15, contributions are lost.',
+    q5: 'Q3: If total contributions reach 15, they are doubled and equally divided.',
+    q6: 'Q4: Payoff = 10 − 4 + (18 × 2 / 3) = 18.',
+    q7: 'Q5: Payoff = 10 − 6 = 4 (threshold not reached).',
+    q8: 'Q6: Payoff = 10 − 0 + (18 × 2 / 3) = 22.',
+    q9: 'Q7: Each group consists of 3 participants.',
+    q10: 'Q8: Groups are reshuffled after every round.'
+};
+
+document.querySelector('form').addEventListener('submit', function(e) {
+    var errorEl = document.getElementById('quiz-error');
+    for (var name in correct) {
+        var selected = document.querySelector('input[name="' + name + '"]:checked');
+        if (!selected || selected.value !== correct[name]) {
+            e.preventDefault();
+            errorEl.style.display = 'block';
+            errorEl.textContent = messages[name];
+            return;
+        }
+    }
+    document.getElementById('quiz_passed').value = 'yes';
+});
+</script>
 
 {% endblock %}

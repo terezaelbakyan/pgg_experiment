@@ -57,42 +57,9 @@ class Player(BasePlayer):
     )
 
 
-    chat_q1 = models.StringField(
-        choices=['Yes', 'No'],
-        blank=True
-    )
-
-    chat_q2 = models.StringField(
-        choices=['Yes', 'No'],
-        blank=True
-    )
-
-    chat_q3 = models.StringField(
-        choices=['Yes', 'No'],
-        blank=True
-    )
-
-    binary_q1 = models.StringField(
-        choices=['Yes', 'No'],
-        blank=True
-    )
-
-    binary_q2 = models.StringField(
-        choices=['Yes', 'No'],
-        blank=True
-    )
-
-    binary_q3 = models.StringField(
-        choices=['Yes', 'No'],
-        blank=True
-    )
-
-    quiz_q1 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
-    quiz_q4 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
-    quiz_q5 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
-    quiz_q6 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
-    quiz_q7 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
-    quiz_q8 = models.StringField(choices=['A', 'B', 'C', 'D'], blank=True)
+    quiz_passed = models.StringField(blank=True)
+    chat_quiz_passed = models.StringField(blank=True)
+    binary_quiz_passed = models.StringField(blank=True)
 
 
 # Stores one row per chat message — avoids race conditions and captures full history
@@ -131,9 +98,13 @@ def creating_session(subsession: Subsession):
         subsession.group_randomly()
         groups = subsession.get_groups()
 
-        # Randomly assign one treatment per group (balanced across treatments)
-        treatments = (['Control', 'Binary', 'Chat'] * len(groups))[:len(groups)]
-        random.shuffle(treatments)
+        # Use forced_treatment if set (demo single-treatment configs), otherwise random balanced assignment
+        forced = subsession.session.config.get('forced_treatment')
+        if forced:
+            treatments = [forced] * len(groups)
+        else:
+            treatments = (['Control', 'Binary', 'Chat'] * len(groups))[:len(groups)]
+            random.shuffle(treatments)
 
         for g, treatment in zip(groups, treatments):
             g.treatment = treatment
@@ -177,7 +148,7 @@ class Introduction(Page):
 
 class Quiz(Page):
     form_model = 'player'
-    form_fields = ['quiz_q1', 'quiz_q4', 'quiz_q5', 'quiz_q6', 'quiz_q7', 'quiz_q8']
+    form_fields = ['quiz_passed']
 
     @staticmethod
     def is_displayed(player):
@@ -185,18 +156,8 @@ class Quiz(Page):
 
     @staticmethod
     def error_message(_player, values):
-        if values['quiz_q1'] != 'B':
-            return "Q1: You receive 10 coins each round."
-        if values['quiz_q4'] != 'C':
-            return "Q4: If total contributions are less than 15, contributions are lost."
-        if values['quiz_q5'] != 'A':
-            return "Q5: If total contributions reach 15, they are doubled and equally divided."
-        if values['quiz_q6'] != 'C':
-            return "Q6: Payoff = 10 − 4 + (18 × 2 / 3) = 18."
-        if values['quiz_q7'] != 'A':
-            return "Q7: Payoff = 10 − 6 = 4 (threshold not reached)."
-        if values['quiz_q8'] != 'C':
-            return "Q8: Payoff = 10 − 0 + (18 × 2 / 3) = 22."
+        if values['quiz_passed'] != 'yes':
+            return "Some answers are incorrect. Please review and try again."
 
 
 class ChatInfo(Page):
@@ -210,7 +171,7 @@ class ChatInfo(Page):
 class ChatQuiz(Page):
 
     form_model = 'player'
-    form_fields = ['chat_q1', 'chat_q2', 'chat_q3']
+    form_fields = ['chat_quiz_passed']
 
     @staticmethod
     def is_displayed(player):
@@ -218,16 +179,9 @@ class ChatQuiz(Page):
                 player.group.field_maybe_none('treatment') == 'Chat')
 
     @staticmethod
-    def error_message(player, values):
-
-        if values['chat_q1'] != 'Yes':
-            return "The communication phase lasts 120 seconds."
-
-        if values['chat_q2'] != 'Yes':
-            return "All members of your group can read your messages."
-
-        if values['chat_q3'] != 'Yes':
-            return "You can contribute any amount between 0 and 10 coins after the communication phase."
+    def error_message(_player, values):
+        if values['chat_quiz_passed'] != 'yes':
+            return "Some answers are incorrect. Please review and try again."
 
 class BinaryInfo(Page):
 
@@ -240,7 +194,7 @@ class BinaryInfo(Page):
 class BinaryQuiz(Page):
 
     form_model = 'player'
-    form_fields = ['binary_q1', 'binary_q2', 'binary_q3']
+    form_fields = ['binary_quiz_passed']
 
     @staticmethod
     def is_displayed(player):
@@ -248,16 +202,9 @@ class BinaryQuiz(Page):
                 player.group.field_maybe_none('treatment') == 'Binary')
 
     @staticmethod
-    def error_message(player, values):
-
-        if values['binary_q1'] != 'Yes':
-            return "All members of your group can see your intended contribution."
-
-        if values['binary_q2'] != 'No':
-            return "Your indicated intention is not your final contribution decision."
-
-        if values['binary_q3'] != 'Yes':
-            return "You can contribute any amount between 0 and 10 coins after indicating your intention."
+    def error_message(_player, values):
+        if values['binary_quiz_passed'] != 'yes':
+            return "Some answers are incorrect. Please review and try again."
 
 
 class WaitBeforeChat(WaitPage):
@@ -279,7 +226,7 @@ class Communication(Page):
     @staticmethod
     def get_timeout_seconds(player):
         if player.group.field_maybe_none('treatment') == 'Chat':
-            return 120
+            return 90
         return None
 
     @staticmethod
@@ -387,6 +334,26 @@ class FinalResults(Page):
     @staticmethod
     def is_displayed(player):
         return player.round_number == player.session.config['num_rounds']
+
+    @staticmethod
+    def vars_for_template(player):
+        played_rounds = player.session.config['num_rounds']
+        all_rounds = player.in_all_rounds()[:played_rounds]
+        rounds_data = [
+            dict(
+                round=p.round_number,
+                contribution=p.contribution,
+                group_total=p.group.total_contribution,
+                threshold_met=p.group.threshold_met,
+                payoff=p.payoff,
+            )
+            for p in all_rounds
+        ]
+        total_payoff = sum(p.payoff for p in all_rounds)
+        return dict(
+            rounds_data=rounds_data,
+            total_payoff=total_payoff,
+        )
 
 
 page_sequence = [

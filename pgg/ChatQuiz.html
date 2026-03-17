@@ -3,32 +3,59 @@
 
 <h3>Comprehension Questions</h3>
 
-<p>Does the communication phase last 120 seconds?</p>
+<div id="quiz-error" style="color: red; margin-bottom: 10px; display: none;"></div>
+
+<p>Does the communication phase last 90 seconds?</p>
 <div>
-    <label><input type="radio" name="chat_q1" value="Yes" required> Yes</label>
+    <label><input type="radio" name="cq1" value="Yes"> Yes</label>
     &nbsp;&nbsp;
-    <label><input type="radio" name="chat_q1" value="No"> No</label>
+    <label><input type="radio" name="cq1" value="No"> No</label>
 </div>
 
 <br>
 
 <p>Can the other members of your group read your messages?</p>
 <div>
-    <label><input type="radio" name="chat_q2" value="Yes" required> Yes</label>
+    <label><input type="radio" name="cq2" value="Yes"> Yes</label>
     &nbsp;&nbsp;
-    <label><input type="radio" name="chat_q2" value="No"> No</label>
+    <label><input type="radio" name="cq2" value="No"> No</label>
 </div>
 
 <br>
 
 <p>Is any amount of coins (0–10) possible to contribute after the communication phase?</p>
 <div>
-    <label><input type="radio" name="chat_q3" value="Yes" required> Yes</label>
+    <label><input type="radio" name="cq3" value="Yes"> Yes</label>
     &nbsp;&nbsp;
-    <label><input type="radio" name="chat_q3" value="No"> No</label>
+    <label><input type="radio" name="cq3" value="No"> No</label>
 </div>
+
+<input type="hidden" name="chat_quiz_passed" id="chat_quiz_passed" value="">
 
 <br>
 {{ next_button }}
+
+<script>
+var correct = {cq1:'Yes', cq2:'Yes', cq3:'Yes'};
+var messages = {
+    cq1: 'The communication phase lasts 90 seconds.',
+    cq2: 'All members of your group can read your messages.',
+    cq3: 'You can contribute any amount between 0 and 10 coins after the communication phase.'
+};
+
+document.querySelector('form').addEventListener('submit', function(e) {
+    var errorEl = document.getElementById('quiz-error');
+    for (var name in correct) {
+        var selected = document.querySelector('input[name="' + name + '"]:checked');
+        if (!selected || selected.value !== correct[name]) {
+            e.preventDefault();
+            errorEl.style.display = 'block';
+            errorEl.textContent = messages[name];
+            return;
+        }
+    }
+    document.getElementById('chat_quiz_passed').value = 'yes';
+});
+</script>
 
 {% endblock %}

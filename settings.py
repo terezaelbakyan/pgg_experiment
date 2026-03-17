@@ -5,10 +5,35 @@ INSTALLED_APPS = ['pgg', 'otree']
 SESSION_CONFIGS = [
     dict(
         name='pgg_multi_treatment',
-        display_name="Public Goods Game (All Treatments in One Session)",
+        display_name="Public Goods Game (All Treatments)",
         num_demo_participants=9,  # must be a multiple of 9 (3 treatments × 3 players per group). Min = 9.
         app_sequence=['pgg'],
-        num_rounds=4,  # <-- change this to set the number of rounds per session
+        num_rounds=4,
+    ),
+    # --- Demo-only single-treatment configs ---
+    dict(
+        name='pgg_control',
+        display_name="Public Goods Game — Control (Demo)",
+        num_demo_participants=3,
+        app_sequence=['pgg'],
+        num_rounds=4,
+        forced_treatment='Control',
+    ),
+    dict(
+        name='pgg_binary',
+        display_name="Public Goods Game — Binary (Demo)",
+        num_demo_participants=3,
+        app_sequence=['pgg'],
+        num_rounds=4,
+        forced_treatment='Binary',
+    ),
+    dict(
+        name='pgg_chat',
+        display_name="Public Goods Game — Chat (Demo)",
+        num_demo_participants=3,
+        app_sequence=['pgg'],
+        num_rounds=4,
+        forced_treatment='Chat',
     ),
 ]
 
@@ -16,6 +41,8 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=0.01,
     participation_fee=1.00,
 )
+
+POINTS_DECIMAL_PLACES = 2
 
 # These lines are required to avoid the LANGUAGE_CODE error
 LANGUAGE_CODE = 'en'

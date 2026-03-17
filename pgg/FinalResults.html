@@ -3,18 +3,35 @@
 
 <h3>Final Earnings</h3>
 
-<p>
-The experiment is now complete.
-</p>
+<p>The experiment is now complete. Here is a summary of your results across all rounds:</p>
 
-<p>
-Your total earnings from the experiment are:
-</p>
+<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Round</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Your Contribution</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Group Total</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Threshold Met</th>
+            <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Your Coins</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in rounds_data %}
+        <tr>
+            <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">{{ r.round }}</td>
+            <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">{{ r.contribution }}</td>
+            <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">{{ r.group_total }}</td>
+            <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">{% if r.threshold_met %}Yes{% else %}No{% endif %}</td>
+            <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">{{ r.payoff }}</td>
+        </tr>
+        {% endfor %}
+        <tr style="background-color: #f2f2f2; font-weight: bold;">
+            <td colspan="4" style="padding: 8px; border: 1px solid #ddd; text-align: right;">Total</td>
+            <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">{{ total_payoff }}</td>
+        </tr>
+    </tbody>
+</table>
 
-<h2>{{ player.payoff }} coins</h2>
-
-<p>
-Thank you for participating.
-</p>
+<p>Thank you for participating.</p>
 
 {% endblock %}
