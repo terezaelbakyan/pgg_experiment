@@ -26,6 +26,10 @@ class Group(BaseGroup):
 
         players = self.get_players()
 
+        # Guard: skip if contributions were never collected (rounds beyond num_rounds)
+        if any(p.field_maybe_none('contribution') is None for p in players):
+            return
+
         self.total_contribution = sum(p.contribution for p in players)
 
         if self.total_contribution >= C.THRESHOLD:
@@ -56,6 +60,11 @@ class Player(BasePlayer):
         blank=True
     )
 
+
+    gender = models.StringField(
+        choices=['Male', 'Female'],
+        widget=widgets.RadioSelect
+    )
 
     quiz_passed = models.StringField(blank=True)
     chat_quiz_passed = models.StringField(blank=True)
@@ -160,6 +169,15 @@ class Quiz(Page):
             return "Some answers are incorrect. Please review and try again."
 
 
+class Gender(Page):
+    form_model = 'player'
+    form_fields = ['gender']
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number == 1
+
+
 class ChatInfo(Page):
 
     @staticmethod
@@ -211,7 +229,8 @@ class WaitBeforeChat(WaitPage):
 
     @staticmethod
     def is_displayed(player):
-        return player.group.field_maybe_none('treatment') == 'Chat'
+        return (player.round_number <= player.session.config['num_rounds'] and
+                player.group.field_maybe_none('treatment') == 'Chat')
 
 class Communication(Page):
 
@@ -296,9 +315,14 @@ class WaitAfterBinary(WaitPage):
 
     @staticmethod
     def is_displayed(player):
-        return player.group.field_maybe_none('treatment') == 'Binary'
+        return (player.round_number <= player.session.config['num_rounds'] and
+                player.group.field_maybe_none('treatment') == 'Binary')
 
 class WaitForOthers(WaitPage):
+
+    @staticmethod
+    def is_displayed(player):
+        return player.round_number <= player.session.config['num_rounds']
 
     @staticmethod
     def after_all_players_arrive(group: Group):
@@ -357,6 +381,7 @@ class FinalResults(Page):
 
 
 page_sequence = [
+    Gender,
     Introduction,
     Quiz,
     ChatInfo,

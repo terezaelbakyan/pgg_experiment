@@ -1,13 +1,23 @@
-venv
-staticfiles
-./db.sqlite3
-.idea
-*~
-*.sqlite3
-_static_root
-_bots*s
-__temp*
+# Python
 __pycache__/
-*.py[cod]
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+env/
+
+# oTree databases and temp files
+db.sqlite3
+db 2.sqlite3
+__temp_bots_*/
+
+# OS files
 .DS_Store
-*.otreezip
+
+# Excel exports
+*.xlsx
+
+# IDE
+.vscode/
+.idea/

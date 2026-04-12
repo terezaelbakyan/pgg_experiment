@@ -35,6 +35,14 @@ SESSION_CONFIGS = [
         num_rounds=4,
         forced_treatment='Chat',
     ),
+    # --- Bot test config (999 players = 333 groups, 111 per treatment) ---
+    dict(
+        name='pgg_bot_test',
+        display_name="Public Goods Game — Bot Test (999 players)",
+        num_demo_participants=999,
+        app_sequence=['pgg'],
+        num_rounds=20,
+    ),
 ]
 
 SESSION_CONFIG_DEFAULTS = dict(
