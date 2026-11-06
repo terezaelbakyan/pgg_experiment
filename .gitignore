@@ -21,3 +21,6 @@ __temp_bots_*/
 # IDE
 .vscode/
 .idea/
+
+# Local Claude Code settings
+.claude/

@@ -1,0 +1,635 @@
+%==================================================================
+% Final Defence Presentation — Tereza Elbakyan, AUA, May 2026
+% Content sourced exclusively from submitted thesis.
+% Compile on Overleaf (pdfLaTeX)
+%==================================================================
+\documentclass[aspectratio=169,10pt]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{array}
+
+%------------------------------------------------------------------
+% Colours
+%------------------------------------------------------------------
+\definecolor{charcoal}{RGB}{42,42,46}
+\definecolor{charcoallight}{RGB}{68,68,72}
+\definecolor{controlgreen}{RGB}{46,139,87}
+\definecolor{binaryorange}{RGB}{204,102,0}
+\definecolor{chatblue}{RGB}{25,100,185}
+\definecolor{blockbg}{RGB}{240,242,246}
+
+%------------------------------------------------------------------
+% Theme
+%------------------------------------------------------------------
+\usetheme{default}
+\usecolortheme{default}
+\setbeamercolor{frametitle}{bg=charcoal, fg=white}
+\setbeamerfont{frametitle}{size=\normalsize, series=\bfseries}
+\setbeamercolor{palette primary}{bg=charcoal, fg=white}
+\setbeamercolor{palette secondary}{bg=charcoallight, fg=white}
+\setbeamercolor{structure}{fg=charcoal}
+\setbeamercolor{normal text}{fg=charcoal}
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{block title}{bg=blockbg, fg=charcoal}
+\setbeamercolor{block body}{bg=blockbg!55, fg=charcoal}
+\setbeamerfont{block title}{size=\small, series=\bfseries}
+\setbeamerfont{block body}{size=\small}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize item}{\small\textbullet}
+\setbeamertemplate{itemize subitem}{\footnotesize$\circ$}
+
+\setbeamertemplate{frametitle}{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=0.9ex,leftskip=0.8em]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle%
+  \end{beamercolorbox}%
+}
+
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.30\paperwidth,ht=2.0ex,dp=0.8ex,leftskip=0.6em]{palette primary}%
+      \small T.~Elbakyan%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.44\paperwidth,ht=2.0ex,dp=0.8ex,center]{palette secondary}%
+      \small Threshold PGG --- Final Defence%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.26\paperwidth,ht=2.0ex,dp=0.8ex,rightskip=0.6em,right]{palette primary}%
+      \small\insertframenumber\,/\,\inserttotalframenumber%
+    \end{beamercolorbox}%
+  }%
+  \vskip0pt%
+}
+
+\setbeamertemplate{title page}{%
+  \begin{beamercolorbox}[wd=\paperwidth,ht=\paperheight]{palette primary}%
+    \vspace*{1.8em}%
+    \centering%
+    {\large\bfseries\color{white}\inserttitle\par}%
+    \vspace{0.5em}%
+    {\small\color{white!80}\insertsubtitle\par}%
+    \vspace{1.1em}%
+    \textcolor{white!45}{\rule{0.42\paperwidth}{0.4pt}}\par%
+    \vspace{0.9em}%
+    {\normalsize\color{white!90}\insertauthor\par}%
+    \vspace{0.35em}%
+    {\small\color{white!80}\insertinstitute\par}%
+    \vspace{0.3em}%
+    {\small\color{white!70}\insertdate\par}%
+    \vspace{1.0em}%
+    \textcolor{white!35}{\rule{0.28\paperwidth}{0.4pt}}\par%
+    \vspace{0.65em}%
+    {\small\itshape\color{white!65}%
+      Good morning --- and congratulations to the Class of 2026.\par}%
+    \vspace{0.25em}%
+    {\footnotesize\color{white!50}%
+      With gratitude to Dr.~Baghdasaryan, Dr.~Ohanyan, and Alen Lalayan.\par}%
+  \end{beamercolorbox}%
+}
+
+%------------------------------------------------------------------
+% Colour shorthand
+%------------------------------------------------------------------
+\newcommand{\cg}[1]{\textcolor{controlgreen}{\textbf{#1}}}
+\newcommand{\bo}[1]{\textcolor{binaryorange}{\textbf{#1}}}
+\newcommand{\cb}[1]{\textcolor{chatblue}{\textbf{#1}}}
+\newcommand{\yes}{\textcolor{controlgreen}{\checkmark}}
+\newcommand{\no}{\textcolor{red}{$\times$}}
+
+%------------------------------------------------------------------
+% Metadata
+%------------------------------------------------------------------
+\title[Threshold PGG]{Communication and Cooperation in Economic Decision Making:\\
+  An Experimental Investigation in Threshold Public Goods Games}
+\subtitle{Final Defence Presentation}
+\author[T.~Elbakyan]{Tereza Elbakyan\\[0.25em]{\small Supervisor: Dr.~Vardan Baghdasaryan}}
+\institute{American University of Armenia\\
+  Manoogian Simone College of Business and Economics}
+\date{May 2026}
+
+%==================================================================
+\begin{document}
+%==================================================================
+
+%----------------------------------------------------------
+% SLIDE 1 — Title / Greeting
+%----------------------------------------------------------
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+%----------------------------------------------------------
+% SLIDE 2 — Topic & Research Question
+%----------------------------------------------------------
+\begin{frame}{Topic \& Research Question}
+
+\begin{block}{Research Question}
+\small
+Does pre-play cheap talk improve coordination in a threshold public goods game,
+and does the richness of the communication channel determine the size of the effect?
+\end{block}
+
+\vspace{0.5em}
+\begin{columns}[T]
+  \begin{column}{0.52\textwidth}
+    \textbf{The problem}
+    \begin{itemize}\small
+      \item A provision point is introduced: the public good is provided only when combined
+            contributions reach a minimum level
+      \item Free-riding incentives exist alongside a coordination problem
+      \item An individual player's contribution depends on the belief that others will
+            contribute enough for it to matter
+      \item Without a communication device, players may shift toward the inferior equilibrium
+    \end{itemize}
+  \end{column}
+  \begin{column}{0.44\textwidth}
+    \textbf{Three treatments}
+    \begin{itemize}\small
+      \item \cg{Control} --- no communication before each contribution decision
+      \item \bo{Binary} --- numerical intention signal (0--10, non-binding)
+      \item \cb{Chat} --- 90-second unrestricted anonymous text chat
+    \end{itemize}
+    \vspace{0.4em}
+    \small Everything else is the same across treatments.
+    Differences in outcomes are attributed to communication alone.
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+%----------------------------------------------------------
+% SLIDE 3 — Prior Work: P&R 1991 + PRR 2016
+%----------------------------------------------------------
+\begin{frame}{Prior Work: Two Key Papers}
+
+\begin{columns}[T]
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Palfrey \& Rosenthal (1991)}
+      \small
+      Threshold PGG with \textbf{private information} about contribution costs.
+      Implemented a binary communication mechanism.\\[0.4em]
+      Demonstrated that perfect coordination is not Bayesian incentive compatible;
+      weak free-riding incentives are retained.
+      Proved the existence of communication equilibria that improve efficiency.\\[0.4em]
+      \textbf{Empirical finding:} Binary communication does \emph{not} produce more efficient outcomes
+      compared with the no-communication baseline.
+    \end{block}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Palfrey, Rosenthal \& Roy (2016)}
+      \small
+      Developed a Bayesian mechanism design to estimate efficiency bounds under three communication structures:
+      binary, numerical cost reports, and unrestricted text chat.\\[0.4em]
+      Efficiency bounds depend on the richness of the message space
+      and the distribution of private information.\\[0.4em]
+      \textbf{Finding:} Significant efficiency gains arise with unrestricted chat \emph{only}.
+      Binary and numerical signals have little to no effect.
+    \end{block}
+  \end{column}
+\end{columns}
+
+\vspace{0.4em}
+\begin{block}{Relationship to PRR (2016)}
+  \small
+  PRR (2016) is the \textbf{primary base} of this study both theoretically and empirically.
+  The present experiment replicates their numerical and chat treatments
+  in a different subject pool and contribution setting.
+\end{block}
+
+\end{frame}
+
+%----------------------------------------------------------
+% SLIDE 4 — Their Game → Your Game
+%----------------------------------------------------------
+\begin{frame}{Their Game $\longrightarrow$ Your Game}
+
+\begin{columns}[T]
+  \begin{column}{0.46\textwidth}
+    \textbf{PRR (2016) setup}
+    \begin{itemize}\small
+      \item Threshold public goods game
+      \item \textbf{Private information} about contribution costs and endowment types
+      \item Three communication structures: binary, numerical, unrestricted chat
+      \item Found significant efficiency gains from unrestricted chat in a structurally similar game
+    \end{itemize}
+  \end{column}
+  \begin{column}{0.50\textwidth}
+    \textbf{This study}
+    \begin{itemize}\small
+      \item Same threshold public goods game structure
+      \item \textbf{Complete information}: all parameters are disclosed to every player\\
+            ($e=10$, $T=15$, $m=2$ are common knowledge)
+      \item Three treatments: \cg{Control}, \bo{Binary}, \cb{Chat}
+      \item Subject pool: AUA undergraduate students, Armenia
+      \item 90-second chat window (PRR used 60 seconds) --- extra 30 seconds to offset the
+            language barrier; participants' native language is Armenian
+    \end{itemize}
+  \end{column}
+\end{columns}
+
+\vspace{0.4em}
+\begin{block}{}
+  \small
+  Complete information simplifies the environment but introduces a \emph{multiplicity of equilibria}.
+  The implications of this for the research question are central to the study.
+\end{block}
+
+\end{frame}
+
+%----------------------------------------------------------
+% SLIDE 5 — Game Structure
+%----------------------------------------------------------
+\begin{frame}{Game Structure}
+
+\begin{columns}[T]
+  \begin{column}{0.45\textwidth}
+    \textbf{Parameters}
+    \begin{itemize}\small
+      \item $N = 3$ players per group
+      \item Endowment $e = 10$ coins per round (do not accumulate)
+      \item Threshold $T = 15$ coins
+      \item Multiplier $m = 2$
+      \item $c_p \in \{0, 1, \ldots, 10\}$; contributions are non-refundable
+    \end{itemize}
+
+    \vspace{0.5em}
+    \textbf{Payoff function}
+    \[
+      \pi_p =
+      \begin{cases}
+        (e - c_p) + \dfrac{2\displaystyle\sum c_j}{3}
+          & \text{if } \textstyle\sum c_j \geq 15 \\[8pt]
+        e - c_p
+          & \text{if } \textstyle\sum c_j < 15
+      \end{cases}
+    \]
+  \end{column}
+
+  \begin{column}{0.51\textwidth}
+    \textbf{Two focal Nash equilibria}
+
+    \vspace{0.2em}
+    \begin{block}{\cg{Free-riding: $(0,\,0,\,0)$ $\to$ $\pi = 10$}}
+      \small Contributing zero is a dominant response when others contribute zero.
+      Threshold is never met regardless of player $p$'s decision.
+    \end{block}
+
+    \vspace{0.2em}
+    \begin{block}{\cb{Coordinated: $(5,\,5,\,5)$ $\to$ $\pi = 15$}}
+      \small $c_p = 5$ maximises individual payoff given others contribute 5.\\
+      $\pi_p = (10{-}5) + \tfrac{2 \times 15}{3} = 5 + 10 = 15$.
+      No player has an incentive to deviate.
+    \end{block}
+
+    \vspace{0.3em}
+    \small
+    \textbf{92} pure-strategy Nash equilibria in total;
+    \textbf{74} satisfy trembling-hand perfection (THPE);
+    \textbf{18} are not THPE (any equilibrium where some $c_p = 10$).
+
+    \vspace{0.4em}
+    $\Rightarrow$ Multiple equilibria; common knowledge of rationality alone cannot select among them.
+    We study \textbf{3 treatments}.
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+%----------------------------------------------------------
+% SLIDE 6 — Three Treatments (one by one)
+%----------------------------------------------------------
+\begin{frame}{Three Treatments}
+
+\begin{columns}[T]
+  \begin{column}{0.31\textwidth}
+    \begin{block}{\cg{Control}}
+      \small
+      \textbf{One stage:}\\[0.3em]
+      A decision page is displayed.
+      Participants enter a contribution
+      from 0 to 10 coins.\\[0.3em]
+      No prior communication of any kind.\\[0.3em]
+      \textbf{Baseline treatment.}
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.31\textwidth}
+    \begin{block}{\bo{Binary}}
+      \small
+      \textbf{Two stages:}\\[0.3em]
+      \textit{Communication:} Each player states a numerical intention (0--10).
+      All intentions are simultaneously revealed to the group.\\[0.3em]
+      \textit{Contribution:} Players enter their contribution (0--10 coins).\\[0.3em]
+      Intentions are \textbf{non-binding}.
+    \end{block}
+  \end{column}
+
+  \begin{column}{0.31\textwidth}
+    \begin{block}{\cb{Chat}}
+      \small
+      \textbf{Two stages:}\\[0.3em]
+      \textit{Communication:} 90-second unrestricted, anonymous group chat.
+      Rules: relevant messages only; no identity reveal; no offensive language; no nonsense.\\[0.3em]
+      \textit{Contribution:} Players enter their contribution (0--10 coins).\\[0.3em]
+      Communication is \textbf{non-binding}.
+    \end{block}
+  \end{column}
+\end{columns}
+
+\vspace{0.45em}
+\small
+\textbf{Sample:} 135 AUA undergraduates \textbullet\;
+4 sessions (36 + 36 + 36 + 27) \textbullet\;
+45 per treatment \textbullet\;
+13 rounds (number not disclosed) \textbullet\;
+1,755 observations.\\
+Random rematching within treatment each round to prevent reputation effects.
+oTree (Chen, Schonger \& Wickens, 2016). \; IRB: AUA-2026-016.
+
+\end{frame}
+
+%----------------------------------------------------------
+% SLIDE 7 — TH1 & TH2 + Spec 1
+%----------------------------------------------------------
+\begin{frame}{Hypotheses \& Results: Contributions (TH1 \& TH2)}
+
+\begin{columns}[T]
+  \begin{column}{0.50\textwidth}
+    \textbf{Hypotheses}\\[0.3em]
+    \small
+    \textbf{TH1:} \cb{Chat} increases average individual contributions
+    relative to \cg{Control}.\\[0.4em]
+    \textbf{TH2:} \bo{Binary} decreases average individual contributions
+    relative to \cg{Control}.
+    Binary signals may anchor groups on the free-riding outcome;
+    players may see benefit in defecting when the intentions of the group are revealed.
+
+    \vspace{0.5em}
+    \small\textbf{Spec.\ 1:}
+    $\text{Contribution}_{it} = \beta_0 + \beta_1\text{Binary}_i + \beta_2\text{Chat}_i
+    + \beta_{3\text{--}5}\text{Section}_i + \varepsilon_{it}$
+
+    \vspace{0.5em}
+    \small\textbf{Descriptive means (Table 1):}\\
+    \cg{Control} 6.17 \quad \bo{Binary} 5.61 \quad \cb{Chat} 6.62
+  \end{column}
+
+  \begin{column}{0.46\textwidth}
+    \small\textbf{Table 2 (Specification 1)}\\[0.25em]
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \renewcommand{\arraystretch}{1.20}
+    \begin{tabular}{@{}lcccc@{}}
+      \toprule
+      & Coef. & SE & $t$ & $p$ \\
+      \midrule
+      \bo{Binary}   & $-0.561$ & $(0.171)$ & $-3.28$ & $0.001$ \\
+      \cb{Chat}     & $+0.448$ & $(0.171)$ & $+2.62$ & $0.009$ \\
+      Section A     & $+1.058$ & $(0.206)$ & $+5.13$ & $0.000$ \\
+      Section B     & $-0.483$ & $(0.191)$ & $-2.53$ & $0.011$ \\
+      Section C     & $+0.585$ & $(0.191)$ & $+3.07$ & $0.002$ \\
+      Constant      & $+5.929$ & $(0.167)$ & $+35.47$ & $0.000$ \\
+      \midrule
+      $N$ & \multicolumn{4}{c}{1{,}755} \\
+      \bottomrule
+      \multicolumn{5}{@{}l}{\tiny Omitted: Control, Section D.}
+    \end{tabular}
+
+    \vspace{0.4em}
+    \begin{itemize}\small
+      \item \cb{Chat} $+0.448$, $p{=}0.009$ \quad \textbf{TH1 \yes}
+      \item \bo{Binary} $-0.561$, $p{=}0.001$ \quad \textbf{TH2 \yes}
+      \item Communication moves contributions in \emph{opposite} directions
+    \end{itemize}
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+%----------------------------------------------------------
+% SLIDE 8 — GH3 & GH4 + Specs 2 & 3
+%----------------------------------------------------------
+\begin{frame}{Hypotheses \& Results: Payoffs (GH3 \& GH4)}
+
+\begin{columns}[T]
+  \begin{column}{0.55\textwidth}
+    \small\textbf{Table 3 (Specifications 2 \& 3) --- Dep.\ var.: payoff$_{it}$}\\[0.3em]
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabular}{@{}lcc@{}}
+      \toprule
+      & Spec.\ 2 & Spec.\ 3 \\
+      & \tiny (baseline) & \tiny (+contribution) \\
+      \midrule
+      \bo{Binary}         & $-1.474^{***}$ & $-1.391^{***}$ \\
+                          & $(0.295)$      & $(0.295)$ \\[1pt]
+      \cb{Chat}           & $+0.249$       & $+0.183$ \\
+                          & $(0.295)$      & $(0.294)$ \\[1pt]
+      Section A           & $+1.129^{**}$  & $+0.973^{**}$ \\
+                          & $(0.356)$      & $(0.357)$ \\[1pt]
+      Section B           & $-0.714^{*}$   & $-0.643$ \\
+                          & $(0.330)$      & $(0.329)$ \\[1pt]
+      Section C           & $+0.136$       & $+0.050$ \\
+                          & $(0.330)$      & $(0.329)$ \\[1pt]
+      Contribution$_{it}$ & ---            & $+0.147^{***}$ \\
+                          &                & $(0.041)$ \\[1pt]
+      Constant            & $+14.838^{***}$& $+13.964^{***}$ \\
+                          & $(0.289)$      & $(0.377)$ \\
+      \midrule
+      $N$                 & 1{,}755 & 1{,}755 \\
+      \bottomrule
+      \multicolumn{3}{@{}l}{\tiny $^{***}p{<}0.001$;\; $^{**}p{<}0.01$;\; $^{*}p{<}0.05$.\quad Omitted: Control, Section D.}
+    \end{tabular}
+  \end{column}
+
+  \begin{column}{0.41\textwidth}
+    \textbf{Hypotheses}\\[0.3em]
+    \small
+    \textbf{GH3:} \bo{Binary} decreases average individual payoffs relative to \cg{Control}.\\[0.4em]
+    \textbf{GH4:} \cb{Chat} significantly increases average individual payoffs relative to \cg{Control}.
+
+    \vspace{0.5em}
+    \textbf{Findings}
+    \begin{itemize}\small
+      \item \bo{Binary}: $-1.474^{***}$ ($p{<}0.001$), large and significant in both specs\\
+            \textbf{GH3 \yes}
+      \item \cb{Chat}: $+0.249$ ($p{=}0.398$) --- positive direction but not significant\\
+            \textbf{GH4 \no}
+    \end{itemize}
+
+    \vspace{0.4em}
+    \small\textbf{Means (Table 1):}\\
+    \cg{Control} 14.91 \quad \bo{Binary} 13.44\\
+    \cb{Chat} 15.16
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+%----------------------------------------------------------
+% SLIDE 9 — GH5 + Table 4
+%----------------------------------------------------------
+\begin{frame}{Hypothesis \& Results: Binary Intentions vs.\ Contributions (GH5)}
+
+\begin{block}{\textbf{GH5:} Stated intentions will be higher than actual contributions on average in the Binary treatment}
+\end{block}
+
+\vspace{0.35em}
+\begin{columns}[T]
+  \begin{column}{0.49\textwidth}
+    \small\textbf{Table 4, Panel A --- Paired $t$-test (Binary only)}\\[0.3em]
+    \footnotesize
+    \setlength{\tabcolsep}{5pt}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{@{}lccc@{}}
+      \toprule
+      & Mean & SE & $N$ \\
+      \midrule
+      Contribution & 6.078 & 0.149 & 321 \\
+      Intention    & 5.221 & 0.161 & 321 \\
+      \midrule
+      Difference   & 0.857 & 0.175 & 321 \\
+      \multicolumn{4}{@{}l}{$t = 4.891$,\quad $p < 0.001$ (two-tailed)} \\
+      \bottomrule
+    \end{tabular}
+
+    \vspace{0.45em}
+    \small\textbf{GH5 predicted:} intentions $>$ contributions\\
+    \textbf{Observed:} contributions $>$ intentions\\[0.25em]
+    \textbf{GH5 not supported --- direction reversed} \no\\[0.2em]
+    \footnotesize
+    Players understate their cooperative intentions.
+    Players hedge their intentions downward but later cooperate more.
+  \end{column}
+
+  \begin{column}{0.47\textwidth}
+    \small\textbf{Table 4, Panel B --- Specification 4 (Binary only)}\\
+    {\footnotesize Dep.\ var.: contribution$_{it}$,\quad $N = 321$}\\[0.3em]
+    \footnotesize
+    \setlength{\tabcolsep}{4pt}
+    \renewcommand{\arraystretch}{1.18}
+    \begin{tabular}{@{}lcc@{}}
+      \toprule
+      & (1) & (2) \\
+      \midrule
+      Own intention       & $0.334^{***}$ & $0.340^{***}$ \\
+                          & $(0.048)$     & $(0.054)$ \\[1pt]
+      Others' intention   & ---           & $-0.007$ \\
+                          &               & $(0.011)$ \\[1pt]
+      Threshold met       & ---           & $-0.098$ \\
+                          &               & $(0.333)$ \\[1pt]
+      Constant            & $4.335^{***}$ & $4.540^{***}$ \\
+                          & $(0.288)$     & $(0.400)$ \\
+      \bottomrule
+      \multicolumn{3}{@{}l}{\tiny $^{***}p{<}0.001$;\; $^{**}p{<}0.01$;\; $^{*}p{<}0.05$.}
+    \end{tabular}
+
+    \vspace{0.35em}
+    \small
+    Own intention predicts contribution ($p{<}0.001$).
+    Others' intentions ($p{=}0.536$) and threshold attainment ($p{=}0.768$) are both insignificant.
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+%----------------------------------------------------------
+% SLIDE 10 — Results Summary + Limitations
+%----------------------------------------------------------
+\begin{frame}{Results \& Limitations}
+
+\begin{columns}[T]
+  \begin{column}{0.52\textwidth}
+    \small\textbf{Summary (5 hypotheses)}\\[0.3em]
+    \footnotesize
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.30}
+    \begin{tabular}{@{}p{0.7cm}p{4.0cm}c@{}}
+      \toprule
+      \textbf{Hyp.} & \textbf{Prediction} & \\
+      \midrule
+      \textbf{TH1} & \cb{Chat} $\uparrow$ contributions & \yes \\
+                   & \tiny $\hat\beta{=}+0.448$,\; $p{=}0.009$ & \\[2pt]
+      \textbf{TH2} & \bo{Binary} $\downarrow$ contributions & \yes \\
+                   & \tiny $\hat\beta{=}-0.561$,\; $p{=}0.001$ & \\[2pt]
+      \textbf{GH3} & \bo{Binary} $\downarrow$ payoffs & \yes \\
+                   & \tiny $\hat\beta{=}-1.474^{***}$,\; $p{<}0.001$ & \\[2pt]
+      \textbf{GH4} & \cb{Chat} $\uparrow$ payoffs & \no \\
+                   & \tiny $\hat\beta{=}+0.249$,\; $p{=}0.398$ & \\[2pt]
+      \textbf{GH5} & Intentions $>$ contributions & \no \\
+                   & \tiny Reversed: $\Delta{=}+0.857^{***}$ & \\
+      \bottomrule
+    \end{tabular}
+
+    \vspace{0.35em}
+    \small
+    \textbf{Central finding:} The effectiveness of communication critically depends on its form.
+    A single number may just as easily anchor the group on failure as on success.
+    No evidence of learning across rounds was found.
+  \end{column}
+
+  \begin{column}{0.44\textwidth}
+    \small\textbf{Limitations}
+    \begin{itemize}\footnotesize
+      \item No monetary compensation (course participation credit only) --- reduces external validity and weakens incentive compatibility
+      \item A broader and more diverse sample would strengthen confidence in results
+      \item Only 13 rounds within a 30--50 minute constraint --- longer sessions would reveal more patterns
+      \item AUA labs are not designed for behavioural experiments
+    \end{itemize}
+
+    \vspace{0.3em}
+    \small\textbf{Future research}
+    \begin{itemize}\footnotesize
+      \item Identify the minimum communication richness required for a coordination gain to emerge
+    \end{itemize}
+
+    \vspace{0.25em}
+    \begin{block}{}
+      \small
+      Unrestricted chat improves coordination;
+      binary signalling can make outcomes worse than no communication at all.
+    \end{block}
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+%----------------------------------------------------------
+% SLIDE 11 — Thank You / Graduate!!!
+%----------------------------------------------------------
+\begin{frame}[plain]
+  \begin{beamercolorbox}[wd=\paperwidth,ht=\paperheight]{palette primary}
+    \vspace*{2.2em}
+    \centering
+    {\Large\bfseries\color{white} Thank You}\par
+    \vspace{0.9em}
+    {\normalsize\color{white!80}\textit{Questions \& Discussion}}\par
+    \vspace{1.2em}
+    \textcolor{white!40}{\rule{0.40\paperwidth}{0.4pt}}\par
+    \vspace{1.0em}
+    {\small\color{white!88}
+      Tereza Elbakyan\\[0.3em]
+      American University of Armenia\\[0.3em]
+      \texttt{tereza\_elbakyan@edu.aua.am}
+    }\par
+    \vspace{1.1em}
+    \textcolor{white!35}{\rule{0.32\paperwidth}{0.4pt}}\par
+    \vspace{0.8em}
+    {\normalsize\color{white!72}\itshape
+      With gratitude to Dr.~Baghdasaryan, Dr.~Ohanyan,\\[0.2em]
+      Alen Lalayan, my committee, and my classmates.\par}
+    \vspace{0.9em}
+    {\small\color{white!55}
+      IRB Protocol No.~AUA-2026-016 \quad\textbullet\quad
+      CBRD Project, Dr.~V.~Baghdasaryan\par}
+  \end{beamercolorbox}
+\end{frame}
+
+%==================================================================
+\end{document}
+%==================================================================
